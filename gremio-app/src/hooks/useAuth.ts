@@ -4,17 +4,17 @@ export default function useAuth() {
   const [auth, setAuth] = useState<boolean>(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("gremio_token");
+    const token = localStorage.getItem("token");
     setAuth(!!token);
   }, []);
 
   const login = () => {
-    localStorage.setItem("gremio_token", "TOKEN_FALSO");
+    // ❌ NO guardar token aquí
     setAuth(true);
   };
 
   const logout = () => {
-    localStorage.removeItem("gremio_token");
+    localStorage.removeItem("token");
     setAuth(false);
   };
 

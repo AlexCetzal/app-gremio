@@ -11,6 +11,13 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\AuthController;
 
 
+use App\Http\Controllers\UserController;
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/users', [UserController::class, 'store']);
+});
+
+
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);

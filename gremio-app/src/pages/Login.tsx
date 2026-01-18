@@ -2,6 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import toast from "react-hot-toast";
+import api from "../services/api";
+
+
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,19 +14,30 @@ export default function Login() {
 
   const { login } = useAuth();
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
+const handleSubmit = async (e: any) => {
+  e.preventDefault();
 
-    if (email.trim() === "" || password.trim() === "") {
-      return toast.error("Todos los campos son obligatorios");
-    }
+  if (!email || !password) {
+    return toast.error("Todos los campos son obligatorios");
+  }
 
-    // Simulación del login
-    login();
+  try {
+    const { data } = await api.post("/login", {
+      email,
+      password,
+    });
 
+    localStorage.setItem("token", data.token);
+
+    login(); // estado frontend
     toast.success("Inicio de sesión exitoso");
-    navigate("/");
-  };
+    navigate("/dashboard");
+
+  } catch (error: any) {
+    toast.error("Credenciales incorrectas");
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-200">
