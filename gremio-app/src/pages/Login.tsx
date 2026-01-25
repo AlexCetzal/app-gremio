@@ -4,9 +4,6 @@ import useAuth from "../hooks/useAuth";
 import toast from "react-hot-toast";
 import api from "../services/api";
 
-
-
-
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,34 +11,34 @@ export default function Login() {
 
   const { login } = useAuth();
 
-const handleSubmit = async (e: any) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  if (!email || !password) {
-    return toast.error("Todos los campos son obligatorios");
-  }
+    if (!email || !password) {
+      return toast.error("Todos los campos son obligatorios");
+    }
 
-  try {
-    const { data } = await api.post("/login", {
-      email,
-      password,
-    });
+    try {
+      const { data } = await api.post("/login", {
+        email,
+        password,
+      });
 
-    localStorage.setItem("token", data.token);
+      //  Guardar token y usuario
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
 
-    login(); // estado frontend
-    toast.success("Inicio de sesión exitoso");
-    navigate("/dashboard");
+      login(); // estado global
+      toast.success("Inicio de sesión exitoso");
+      navigate("/dashboard");
 
-  } catch (error: any) {
-    toast.error("Credenciales incorrectas");
-  }
-};
-
+    } catch (error) {
+      toast.error("Credenciales incorrectas");
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-200">
-
       <div className="bg-white p-8 rounded-xl shadow-md w-96">
 
         <h1 className="text-2xl font-bold text-center mb-6 text-blue-600">
@@ -49,7 +46,7 @@ const handleSubmit = async (e: any) => {
         </h1>
 
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          
+
           <input
             type="email"
             placeholder="Correo"
@@ -74,9 +71,7 @@ const handleSubmit = async (e: any) => {
           </button>
 
         </form>
-
       </div>
-
     </div>
   );
 }
