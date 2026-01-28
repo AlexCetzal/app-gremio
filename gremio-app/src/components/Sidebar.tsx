@@ -30,7 +30,7 @@ export default function Sidebar() {
 
             <nav className="space-y-1">
 
-                <Link to="/" className={linkClass("/")}>Dashboard</Link>
+                <Link to="/dashboard" className={linkClass("/")}>Dashboard</Link>
                 <Link to="/colaboradores" className={linkClass("/colaboradores")}>Colaboradores</Link>
                 <Link to="/aportaciones" className={linkClass("/aportaciones")}>Aportaciones</Link>
                 <Link to="/donaciones" className={linkClass("/donaciones")}>Donaciones</Link>
